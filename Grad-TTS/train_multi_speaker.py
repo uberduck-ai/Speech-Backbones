@@ -85,7 +85,8 @@ if __name__ == "__main__":
                     n_feats, dec_dim, beta_min, beta_max, pe_scale).cuda()
     if checkpoint:
         model.load_state_dict(torch.load(checkpoint, map_location=lambda loc, storage: loc))
-
+        # Reset speaker embedding layer
+        model.spk_emb = torch.nn.Embedding(n_spks, spk_emb_dim)
     print('Number of encoder parameters = %.2fm' % (model.encoder.nparams/1e6))
     print('Number of decoder parameters = %.2fm' % (model.decoder.nparams/1e6))
 
