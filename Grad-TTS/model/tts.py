@@ -10,6 +10,7 @@ import math
 import random
 
 import torch
+import torch.nn.functional as F
 
 from model import monotonic_align
 from model.base import BaseModule
@@ -165,7 +166,7 @@ class GradTTS(BaseModule):
             
             attn = attn_cut
             y = y_cut
-            y_mask = y_cut_mask
+            y_mask = F.pad(input=y_cut_mask, pad=(0, out_size-y_cut_mask.shape[2], 0, 0), mode='constant', value=0)
 
         # Align encoded text with mel-spectrogram and get mu_y segment
         mu_y = torch.matmul(attn.squeeze(1).transpose(1, 2), mu_x.transpose(1, 2))

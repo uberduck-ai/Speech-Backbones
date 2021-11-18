@@ -57,6 +57,7 @@ beta_min = params.beta_min
 beta_max = params.beta_max
 pe_scale = params.pe_scale
 
+checkpoint = params.checkpoint
 
 if __name__ == "__main__":
     torch.manual_seed(random_seed)
@@ -82,6 +83,9 @@ if __name__ == "__main__":
                     filter_channels, filter_channels_dp, 
                     n_heads, n_enc_layers, enc_kernel, enc_dropout, window_size, 
                     n_feats, dec_dim, beta_min, beta_max, pe_scale).cuda()
+    if checkpoint:
+        model.load_state_dict(torch.load(checkpoint, map_location=lambda loc, storage: loc))
+
     print('Number of encoder parameters = %.2fm' % (model.encoder.nparams/1e6))
     print('Number of decoder parameters = %.2fm' % (model.decoder.nparams/1e6))
 

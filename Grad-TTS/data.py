@@ -18,6 +18,7 @@ from utils import parse_filelist, intersperse
 from model.utils import fix_len_compatibility
 from params import seed as random_seed
 
+import os
 import sys
 sys.path.insert(0, 'hifi-gan')
 from meldataset import mel_spectrogram
@@ -47,7 +48,8 @@ class TextMelDataset(torch.utils.data.Dataset):
         return (text, mel)
 
     def get_mel(self, filepath):
-        audio, sr = ta.load(filepath)
+        dataset_path = "/home/w_uberduck_ai/data/ben-shapiro/"
+        audio, sr = ta.load(os.path.join(dataset_path,filepath))
         assert sr == self.sample_rate
         mel = mel_spectrogram(audio, self.n_fft, self.n_mels, self.sample_rate, self.hop_length,
                               self.win_length, self.f_min, self.f_max, center=False).squeeze()
@@ -126,7 +128,8 @@ class TextMelSpeakerDataset(torch.utils.data.Dataset):
         return (text, mel, speaker)
 
     def get_mel(self, filepath):
-        audio, sr = ta.load(filepath)
+        dataset_path = "/home/w_uberduck_ai/dataset/"
+        audio, sr = ta.load(os.path.join(dataset_path,filepath))
         assert sr == self.sample_rate
         mel = mel_spectrogram(audio, self.n_fft, self.n_mels, self.sample_rate, self.hop_length,
                               self.win_length, self.f_min, self.f_max, center=False).squeeze()
