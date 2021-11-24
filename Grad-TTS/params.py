@@ -43,15 +43,15 @@ beta_max = 20.0
 pe_scale = 1000  # 1 for `grad-tts-old.pt` checkpoint
 
 # training parameters
-log_dir = 'logs/vctk'
+log_dir = 'logs/lachow_warm_grad-tts'
 test_size = 4
 n_epochs = 10000
-batch_size = 32
+batch_size = 16
 learning_rate = 1e-4
 seed = 37
-save_every = 1
+save_every = 500
 out_size = fix_len_compatibility(2*22050//256)
 
 # Warm starting
-checkpoint = None
-checkpoint = "/home/w_uberduck_ai/Speech-Backbones/Grad-TTS/grad_99.pt"
+checkpoint = "/home/w_uberduck_ai/Speech-Backbones/Grad-TTS/checkpts/grad-tts.pt"
+# checkpoint = None

@@ -55,6 +55,7 @@ beta_min = params.beta_min
 beta_max = params.beta_max
 pe_scale = params.pe_scale
 
+checkpoint = params.checkpoint
 
 if __name__ == "__main__":
     torch.manual_seed(random_seed)
@@ -78,7 +79,18 @@ if __name__ == "__main__":
     print('Initializing model...')
     model = GradTTS(nsymbols, 1, None, n_enc_channels, filter_channels, filter_channels_dp, 
                     n_heads, n_enc_layers, enc_kernel, enc_dropout, window_size, 
-                    n_feats, dec_dim, beta_min, beta_max, pe_scale).cuda()
+                    n_feats, dec_dim, beta_min, beta_max, pe_scale)
+    if checkpoint:
+        checkpoint = torch.load(checkpoint)
+        # ignore_layers = ["spk_emb.weight","decoder.estimator.spk_mlp.0.weight","decoder.estimator.spk_mlp.0.bias","decoder.estimator.spk_mlp.2.weight","decoder.estimator.spk_mlp.2.bias","decoder.estimator.downs.0.0.block1.block.0.weight","decoder.estimator.downs.0.0.res_conv.weight"]
+        # warm_model_dict = {k: v for k, v in checkpoint.items() if k not in ignore_layers}
+        # dummy_dict = model.state_dict()
+        # dummy_dict.update(warm_model_dict)
+        # warm_model_dict = dummy_dict
+        model.load_state_dict(checkpoint)
+
+    model = model.cuda()
+
     print('Number of encoder + duration predictor parameters: %.2fm' % (model.encoder.nparams/1e6))
     print('Number of decoder parameters: %.2fm' % (model.decoder.nparams/1e6))
     print('Total parameters: %.2fm' % (model.nparams/1e6))

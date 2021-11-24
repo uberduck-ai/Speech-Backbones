@@ -48,7 +48,7 @@ class TextMelDataset(torch.utils.data.Dataset):
         return (text, mel)
 
     def get_mel(self, filepath):
-        dataset_path = "/home/w_uberduck_ai/data/ben-shapiro/"
+        dataset_path = "/home/w_uberduck_ai/uberduck-rappers"
         audio, sr = ta.load(os.path.join(dataset_path,filepath))
         assert sr == self.sample_rate
         mel = mel_spectrogram(audio, self.n_fft, self.n_mels, self.sample_rate, self.hop_length,
@@ -128,7 +128,7 @@ class TextMelSpeakerDataset(torch.utils.data.Dataset):
         return (text, mel, speaker)
 
     def get_mel(self, filepath):
-        dataset_path = "/home/w_uberduck_ai/dataset/"
+        dataset_path = "/home/w_uberduck_ai/uberduck-rappers"
         audio, sr = ta.load(os.path.join(dataset_path,filepath))
         assert sr == self.sample_rate
         mel = mel_spectrogram(audio, self.n_fft, self.n_mels, self.sample_rate, self.hop_length,
